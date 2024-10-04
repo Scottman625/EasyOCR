@@ -729,6 +729,11 @@ def printProgressBar(prefix='', suffix='', decimals=1, length=100, fill='█'):
 
     return progress_hook
 
+def cv2_readimg(filename, mode):
+    img_date = np.fromfile(filename, dtype=np.uint8)
+    img = cv2.imdecode(img_date, mode)
+    return img
+
 def reformat_input(image):
     if type(image) == str:
         if image.startswith('http://') or image.startswith('https://'):
@@ -736,7 +741,8 @@ def reformat_input(image):
             img_cv_grey = cv2.imread(tmp, cv2.IMREAD_GRAYSCALE)
             os.remove(tmp)
         else:
-            img_cv_grey = cv2.imread(image, cv2.IMREAD_GRAYSCALE)
+            # img_cv_grey = cv2.imread(image, cv2.IMREAD_GRAYSCALE)
+            img_cv_grey = cv2_readimg(image,cv2.IMREAD_GRAYSCALE)
             image = os.path.expanduser(image)
         img = loadImage(image)  # can accept URL
     elif type(image) == bytes:
